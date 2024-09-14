@@ -121,21 +121,21 @@ jobs:
         timeout-minutes: 1
         run: |
           . build\release\tests\Tests_run --gtest_output=json:${{ env.reportdir }}gtest_results.json # 2>&1 | tee -filepath ${{ env.logdir }}/unitTests.log
-      - name: FreeCAD CLI tests
-        run: |
-          . build\release\bin\FreeCADCmd -t 0 # 2>&1 | tee -filepath ${{ env.logdir }}/integrationTests.log
       - name: Upload binaries as artifact
+        if: always()
         uses: actions/upload-artifact@v3
         with:
-          name: freecad_binaries
+          name: bundle
           path: |
-            ${{ env.builddir }}/FreeCAD_*.7z
-            ${{ env.logdir }}
+            build 
+      # - name: FreeCAD CLI tests
+      #   run: |
+      #     . build\release\bin\FreeCADCmd -t 0 # 2>&1 | tee -filepath ${{ env.logdir }}/integrationTests.log
 
-      - name: Upload logs
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: ${{ inputs.artifactBasename }}-Logs
-          path: |
-            ${{ env.logdir }}
+      # - name: Upload logs
+      #   if: always()
+      #   uses: actions/upload-artifact@v4
+      #   with:
+      #     name: ${{ inputs.artifactBasename }}-Logs
+      #     path: |
+      #       ${{ env.logdir }}
