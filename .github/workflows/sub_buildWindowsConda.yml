@@ -124,6 +124,13 @@ jobs:
       - name: FreeCAD CLI tests
         run: |
           . build\release\bin\FreeCADCmd -t 0 # 2>&1 | tee -filepath ${{ env.logdir }}/integrationTests.log
+      - name: Upload file # 将打包产物 上传
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: bundle
+          path: |
+            build\release
       - name: Upload logs
         if: always()
         uses: actions/upload-artifact@v4
